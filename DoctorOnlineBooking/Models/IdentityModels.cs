@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -16,6 +18,10 @@ namespace DoctorOnlineBooking.Models
             // Add custom user claims here
             return userIdentity;
         }
+        [Required]
+        [StringLength(100)]
+        [Column(TypeName = "Varchar")]
+        public string Name { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -33,6 +39,7 @@ namespace DoctorOnlineBooking.Models
         public DbSet<Login> Logins { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<PatientData> PatientDetails { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
 
     }
 }

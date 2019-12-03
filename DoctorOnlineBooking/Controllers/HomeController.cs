@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Nexmo.Api;
+using System.Net.Mail;
+using System.Net;
 
 namespace DoctorOnlineBooking.Controllers
 {
@@ -47,15 +49,14 @@ namespace DoctorOnlineBooking.Controllers
         [HttpPost]
         public ActionResult Login(Login login)
         {
-            //var sap = login.UserName;
-            var emp = DbContext.Employees.SingleOrDefault(a => a.UserName == login.UserName || a.SapId.ToString() == login.UserName);
+            var emp = DbContext.Employees.SingleOrDefault(a => a.Email == login.UserName || a.SapId.ToString() == login.UserName);
             if(emp==null)
             {
                 return Content("Login Credentials Invalid");
             }
             else if (emp.Password == login.Password)
             {
-                login.UserName = emp.UserName;
+                login.UserName = emp.Email;
                 login.SapId = emp.SapId;
                 repository.GetLogins(login);
                 return RedirectToAction("SearchDoctorByLocationAndSpecialisation");
@@ -88,21 +89,87 @@ namespace DoctorOnlineBooking.Controllers
         [HttpGet]
         public ActionResult SelectDoctor()
         {
-            return View();
+            return View("CalendarView");
         }
         [HttpGet]
-        public ActionResult PatientDetails()
+        public ActionResult CalendarView(int id)
         {
+
+            var s = DbContext.Doctors.FirstOrDefault(c => c.Id == id);
+            string start_T = s.Start_Time_M;
+            string end_T = s.End_Time_M;
+            string start_E = s.Start_Time_E;
+            string end_E = s.End_Time_E;
+            int min = 30;
+
+            DateTime s_t = Convert.ToDateTime(start_T);
+            DateTime e_t = Convert.ToDateTime(end_T);
+            DateTime s_t_e = Convert.ToDateTime(start_E);
+            DateTime e_t_e = Convert.ToDateTime(end_E);
+            TimeSpan interval = e_t.Subtract(s_t);
+            TimeSpan interval_E = e_t_e.Subtract(s_t_e);
+            int totalMins = Convert.ToInt32(interval.TotalMinutes);
+            int totalMinInEvening = Convert.ToInt32(interval_E.TotalMinutes);
+            int no_of_slots = totalMins / min;
+            int no_of_slots_evening = totalMinInEvening / min;
+            ViewBag.StartTime = s_t;
+            ViewBag.StartTime_Evening = s_t_e;
+            ViewBag.NoOfSlots = no_of_slots;
+            ViewBag.NoOfSlotsEvening = no_of_slots_evening;
+            ViewBag.Mins = min;
+           
+            return View();
+        }
+        //[HttpPost]
+        //public ActionResult CalendarView(string YourTextBox)
+        //{
+        //    return View("TimeSlots",YourTextBox);
+        //}
+        //[HttpPost]
+        //public ActionResult TimeSlots()
+        //{
+        //    string start_T = "08:30AM";
+        //    string end_T = "01:30PM";
+            
+
+        //    int min = 30;
+
+        //    DateTime s_t = Convert.ToDateTime(start_T);
+        //    DateTime e_t = Convert.ToDateTime(end_T);
+            
+
+        //    TimeSpan interval = e_t.Subtract(s_t);
+          
+
+        //    int totalMins = Convert.ToInt32(interval.TotalMinutes);
+           
+        //    int no_of_slots = totalMins / min;
+           
+        //    ViewBag.StartTime = s_t;
+        //    ViewBag.NoOfSlots = no_of_slots;
+            
+        //    ViewBag.Mins = min;
+        //    return View();
+        //}
+        [HttpPost]
+        public ActionResult PatientDetails(string slotDate,DateTime? evngSlot, DateTime? mrngSlot)
+        {
+
             ViewBag.Gender = GenderList();
+            ViewBag.SlotDate = slotDate;
+            if (evngSlot == null)
+                ViewBag.Slot = mrngSlot;
+            else
+                ViewBag.Slot = evngSlot;
             return View();
         }
         [HttpPost]
-        public ActionResult PatientDetails(PatientData patientData)
+        public ActionResult Sms(PatientData patientData)
         {
             if (patientData != null)
             {
                 repository.DetailsOfPatient(patientData);
-                return Content("Patient Details Enter Successfully");
+                return View("Send");
             }
             else
                 return Content("Data Not Stored");
@@ -121,47 +188,39 @@ namespace DoctorOnlineBooking.Controllers
                 to = to,
                 text = text
             });
-            return View();
+            return Content("Message sent Successfully");
         }
+
+
         [NonAction]
         public IEnumerable<SelectListItem> CityList()
         {
-            var city = new List<SelectListItem>
-            {
-                new SelectListItem{Text="Select City",Value="0",Disabled=true,Selected=true },
-                new SelectListItem{Text="Mumbai",Value="Mumbai"},
-                new SelectListItem{Text="Delhi",Value="Delhi"},
-                new SelectListItem{Text="Chennai",Value="Chennai"}
-            };
+            var city = DbContext.Doctors.AsEnumerable().GroupBy(n=>n.City).
+               Select(m => new SelectListItem() { Text = m.Key }).ToList();
+            city.Insert(0, new SelectListItem { Text = "----select-----", Value = "0", Disabled = true, Selected = true });
             return city;
         }
         [NonAction]
         public IEnumerable<SelectListItem> SpecialisationList()
         {
-            var specialisation = new List<SelectListItem>
-            {
-                new SelectListItem{Text="Select Specialisation",Value="0",Disabled=true,Selected=true },
-                new SelectListItem{Text="Joint Replacement",Value="Joint Replacement"},
-                new SelectListItem{Text="ENT",Value="ENT"},
-                new SelectListItem{Text="Obesity Surgeon",Value="Obesity Surgeon"},
-                new SelectListItem{Text="Orthopaedic",Value="Orthopaedic"},
-                new SelectListItem{Text="Cardiologist",Value="Cardiologist"},
-                new SelectListItem{Text="Neurologist",Value="Neurologist"}
-            };
+            var specialisation = DbContext.Doctors.AsEnumerable().GroupBy(n => n.Specialisation).
+              Select(m => new SelectListItem() { Text = m.Key }).ToList();
+            specialisation.Insert(0, new SelectListItem { Text = "----select-----", Value = "0", Disabled = true, Selected = true });
             return specialisation;
         }
 
         [NonAction]
         public IEnumerable<SelectListItem> GenderList()
         {
-            var gender = new List<SelectListItem>
-            {
-                new SelectListItem{Text="Select Gender",Value="0",Disabled=true,Selected=true },
-                new SelectListItem{Text="Male",Value="Male"},
-                new SelectListItem{Text="Female",Value="Female"},
-                new SelectListItem{Text="Others",Value="Others"}
-            };
+            var gender = DbContext.Doctors.AsEnumerable().GroupBy(n => n.Gender).
+              Select(m => new SelectListItem() { Text = m.Key }).ToList();
+            gender.Insert(0, new SelectListItem { Text = "----select-----", Value = "0", Disabled = true, Selected = true });
             return gender;
         }
+        public ActionResult TimeSlot()
+        {
+            return View();
+        }
+        
     }
 }

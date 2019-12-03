@@ -9,7 +9,7 @@ namespace DoctorOnlineBooking.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(DoctorOnlineBooking.Models.ApplicationDbContext context)

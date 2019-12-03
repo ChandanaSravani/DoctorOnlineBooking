@@ -1,11 +1,8 @@
 ﻿
 @{
-    ViewBag.Title = "Send";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "SendEmail";
 }
-
-<h2>Send</h2>
-@using (Html.BeginForm(@*"Send", "SMS", FormMethod.Post*@))
+@using (Html.BeginForm("Send", "Home", FormMethod.Post))
 {
 
     <input id="to" name="to" type="text" placeholder="To" />

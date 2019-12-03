@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "TimeSlots";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>TimeSlots</h2>
+@{
+    var start_t = ViewBag.StartTime;
+    var new1 = start_t;
+    for (int i = 0; i < ViewBag.NoOfSlots; i++)
+    {
+        <input type="button" value="@new1.TimeOfDay" />
+        new1 = new1.AddMinutes(ViewBag.Mins);
+    }
+
+}

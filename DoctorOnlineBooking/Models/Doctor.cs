@@ -9,6 +9,9 @@ namespace DoctorOnlineBooking.Models
     {
         public int Id { get; set; }
         public string DoctorName { get; set; }
+        public string Gender { get; set; }
+        public DateTime? DOB { get; set; }
+        public int Age { get; set; }
         public string PhoneNumber { get; set; }
         public bool IsAvailable { get; set; }
         public string City { get; set; }
@@ -17,6 +20,11 @@ namespace DoctorOnlineBooking.Models
         public string Country { get; set; }
         public string Specialisation { get; set; }
         public string HospitalName { get; set; }
+        public string Start_Time_M { get; set; }
+        public string End_Time_M { get; set; }
+        public string Start_Time_E { get; set; }
+        public string End_Time_E { get; set; }
+
 
     }
 }

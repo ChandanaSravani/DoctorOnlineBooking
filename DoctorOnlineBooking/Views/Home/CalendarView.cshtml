@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewBag.Title = "CalendarView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<!-- jQuery UI CSS Reference -->
+<link href="@Url.Content("~/Content/themes/base/jquery-ui.min.css")" rel="stylesheet" />
+<!-- Required jQuery and jQuery UI Javascript references -->
+<script src="@Url.Content("~/Scripts/jquery-3.3.1.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.date-picker').datepicker({
+            minDate: 0, maxDate: "+3M +0D"
+        });
+    })
+</script>
+@using (Html.BeginForm("PatientDetails", "Home"))
+{
+<center>
+    <h2>Book Your Slot</h2>
+    <div>
+        @Html.TextBox("SlotDate", "", new { @class = "date-picker" })
+    </div>
+    <div>
+        <br />
+    </div>
+    <div>
+        <table>
+            <tr>
+                <td>
+                    <input id="show" type="text" value="Morning Slot" class="btn btn-outline-primary" />
+                    @*<button onchange="document.forms[0].submit();">Morning Slot</button>*@
+                </td>
+                <td class="col-md-2"></td>
+                <td>
+                    <input id="showEvening" type="text" value="Evening Slot"  class="btn btn-outline-primary" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div id="slots">
+        @{
+            var start_t = ViewBag.StartTime;
+            var new1 = start_t;
+
+
+            for (int i = 0; i < ViewBag.NoOfSlots; i++)
+            {
+                <p>
+                    <input type="submit" id="MS" name="MrngSlot" value="@new1.TimeOfDay" />
+                   
+                </p>
+                new1 = new1.AddMinutes(ViewBag.Mins);
+            }
+
+        }
+    </div>
+    <div id="slotsEvening">
+        @{
+            var start_E = ViewBag.StartTime_Evening;
+            var newValue = start_E;
+
+
+            for (int i = 0; i < ViewBag.NoOfSlotsEvening; i++)
+            {
+                <p>
+                    <input type="submit" id="ES" name="EvngSlot" value="@newValue.TimeOfDay" />
+                   
+                </p>
+                newValue = newValue.AddMinutes(ViewBag.Mins);
+            }
+
+        }
+    </div>
+</center>
+}
+@section scripts{
+    <script>
+        $("#slots").hide();
+        $("#slotsEvening").hide();
+        $("#show").click(function () {
+            if ($("#SlotDate").val() =="") {
+                alert("Select your Appointment Date");
+            }
+            else {
+                $("#slotsEvening").hide();
+                $("#slots").show();
+            }
+        });
+        $("#showEvening").click(function () {
+            if ($("#SlotDate").val() == "") {
+                alert("Select your Appointment Date");
+            }
+            else {
+                $("#slots").hide();
+                $("#slotsEvening").show();
+            }
+        });
+        document.getElementById("ES").onclick = function () {
+            //disable
+            this.disabled = true;
+
+            //do some validation stuff
+        }
+          
+    </script>
+    }
+
+
+

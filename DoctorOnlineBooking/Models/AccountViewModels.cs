@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DoctorOnlineBooking.Models
 {
@@ -64,6 +65,11 @@ namespace DoctorOnlineBooking.Models
 
     public class RegisterViewModel
     {
+        [Required]
+        [StringLength(100)]
+        [Column(TypeName = "Varchar")]
+        public string Name { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

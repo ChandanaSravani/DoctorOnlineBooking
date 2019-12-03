@@ -1,0 +1,12 @@
+﻿#img_box {
+    width: 90%;
+    height: 90%;
+}
+
+.resize_horizontal {
+    width: 100%;
+}
+
+.resize_vertical {
+    height: 100%;
+}

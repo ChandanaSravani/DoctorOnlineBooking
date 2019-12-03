@@ -3,55 +3,64 @@
     ViewBag.Title = "PatientDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>PatientDetails</h2>
-<div class="container col-md-12">
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-        <div class="form-group">
-            <label>Patient Name</label>
-            @Html.TextBoxFor(c => c.PatientName, new { @class = "form-control", autocomplete = "off" })
-            @Html.ValidationMessageFor(c => c.PatientName)
-        </div>
-        <div class="form-group">
-            <label>Phone Number</label>
-            @Html.TextBoxFor(c => c.PhoneNumber, new { @class = "form-control", autocomplete = "off" })
-            @Html.ValidationMessageFor(c => c.PhoneNumber)
-        </div>
-        <div class="form-group">
-            <label>Age</label>
-            @Html.TextBoxFor(c => c.Age, new { @class = "form-control", autocomplete = "off" })
-            @Html.ValidationMessageFor(c => c.Age)
-        </div>
-        <div class="form-group">
-            <label>Gender</label>
-            @Html.DropDownListFor(c => c.Gender, ViewBag.Gender as SelectList, new { @class = "form-control" })
-            @*@Html.TextBoxFor(c => c.Gender, new { @class = "form-control", autocomplete = "off" })*@
-            @Html.ValidationMessageFor(c => c.Gender)
-        </div>
-        <div class="form-group">
-            <label>Address</label>
-            @Html.TextAreaFor(c => c.Address, new { @class = "form-control", autocomplete = "off" })
-            @Html.ValidationMessageFor(c => c.Address)
-        </div>
-        <div class="form-group">
-            <label>City</label>
-            @Html.TextBoxFor(c => c.City, new { @class = "form-control", autocomplete = "off" })
-            @Html.ValidationMessageFor(c => c.City)
-        </div>
-        <div class="form-group">
-            <label>State</label>
-            @Html.TextBoxFor(c => c.State, new { @class = "form-control", autocomplete = "off" })
-            @Html.ValidationMessageFor(c => c.State)
-        </div>
-        <div class="form-group">
-            <label>Country</label>
-            @Html.TextBoxFor(c => c.Country, new { @class = "form-control", autocomplete = "off" })
-            @Html.ValidationMessageFor(c => c.Country)
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Submit" id="btnSubmit" class="btn btn-outline-primary" />
-        </div>
+<center>
+    <h2>Fill the Patient Details</h2>
+    @{
+        var time = ViewBag.Slot;
+        var date = ViewBag.SlotDate;
+        <h3><font color="orange" width="30" height="30">Your Booking Date : @date</font></h3>
+       
+        <h3><font color="orange" width="30" height="30">Your Slot : @time.TimeOfDay</font></h3>
     }
-</div>
+</center>
+    <div class="container col-md-12">
+        @using (Html.BeginForm("Sms", "Home"))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <label>Patient Name</label>
+                @Html.TextBoxFor(c => c.PatientName, new { @class = "form-control", autocomplete = "off" })
+                @Html.ValidationMessageFor(c => c.PatientName)
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                @Html.TextBoxFor(c => c.PhoneNumber, new { @class = "form-control", autocomplete = "off" })
+                @Html.ValidationMessageFor(c => c.PhoneNumber)
+            </div>
+            <div class="form-group">
+                <label>Age</label>
+                @Html.TextBoxFor(c => c.Age, new { @class = "form-control", autocomplete = "off" })
+                @Html.ValidationMessageFor(c => c.Age)
+            </div>
+            <div class="form-group">
+                <label>Gender</label>
+                @Html.DropDownListFor(c => c.Gender, ViewBag.Gender as SelectList, new { @class = "form-control" })
+                @*@Html.TextBoxFor(c => c.Gender, new { @class = "form-control", autocomplete = "off" })*@
+                @Html.ValidationMessageFor(c => c.Gender)
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                @Html.TextAreaFor(c => c.Address, new { @class = "form-control", autocomplete = "off" })
+                @Html.ValidationMessageFor(c => c.Address)
+            </div>
+            <div class="form-group">
+                <label>City</label>
+                @Html.TextBoxFor(c => c.City, new { @class = "form-control", autocomplete = "off" })
+                @Html.ValidationMessageFor(c => c.City)
+            </div>
+            <div class="form-group">
+                <label>State</label>
+                @Html.TextBoxFor(c => c.State, new { @class = "form-control", autocomplete = "off" })
+                @Html.ValidationMessageFor(c => c.State)
+            </div>
+            <div class="form-group">
+                <label>Country</label>
+                @Html.TextBoxFor(c => c.Country, new { @class = "form-control", autocomplete = "off" })
+                @Html.ValidationMessageFor(c => c.Country)
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" id="btnSubmit" class="btn btn-outline-primary" />
+            </div>
+        }
+    </div>
