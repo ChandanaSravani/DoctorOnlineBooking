@@ -14,7 +14,8 @@
 <script type="text/javascript">
     $(function () {
         $('.date-picker').datepicker({
-            minDate: 0, maxDate: "+3M +0D"
+            minDate: 0, maxDate: "+3M +0D", dateFormat:"dd/mm/yy"
+           
         });
     })
 </script>
@@ -23,7 +24,7 @@
 <center>
     <h2>Book Your Slot</h2>
     <div>
-        @Html.TextBox("SlotDate", "", new { @class = "date-picker" })
+        @Html.TextBox("SlotDate", "", new { @class = "date-picker", autocomplete = "off" })
     </div>
     <div>
         <br />
@@ -77,6 +78,7 @@
 
         }
     </div>
+  
 </center>
 }
 @section scripts{

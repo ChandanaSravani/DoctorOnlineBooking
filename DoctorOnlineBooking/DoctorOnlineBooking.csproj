@@ -383,11 +383,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\images.png" />
     <Content Include="Images\img1.png" />
     <Content Include="Images\img2.jpg" />
     <Content Include="Images\img3.jpg" />
     <Content Include="Images\img4.jpg" />
     <Content Include="Images\LoginImage.png" />
+    <Content Include="Images\logologin.png" />
     <Content Include="Images\pic1.jpg" />
     <Content Include="Images\pic10.jpg" />
     <Content Include="Images\pic2.jpg" />

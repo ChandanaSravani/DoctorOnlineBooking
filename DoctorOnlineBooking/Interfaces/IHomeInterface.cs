@@ -13,7 +13,7 @@ namespace DoctorOnlineBooking.Interfaces
         Login GetLogins(Login login);
         List<Doctor> ByLocation(string city,string specialisation);
         PatientData DetailsOfPatient(PatientData patientData);
-
+        
     }
 
 }

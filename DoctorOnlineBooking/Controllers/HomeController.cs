@@ -94,18 +94,12 @@ namespace DoctorOnlineBooking.Controllers
         [HttpGet]
         public ActionResult CalendarView(int id)
         {
-
             var s = DbContext.Doctors.FirstOrDefault(c => c.Id == id);
-            string start_T = s.Start_Time_M;
-            string end_T = s.End_Time_M;
-            string start_E = s.Start_Time_E;
-            string end_E = s.End_Time_E;
             int min = 30;
-
-            DateTime s_t = Convert.ToDateTime(start_T);
-            DateTime e_t = Convert.ToDateTime(end_T);
-            DateTime s_t_e = Convert.ToDateTime(start_E);
-            DateTime e_t_e = Convert.ToDateTime(end_E);
+            DateTime s_t = Convert.ToDateTime(s.Start_Time_M);
+            DateTime e_t = Convert.ToDateTime(s.End_Time_M);
+            DateTime s_t_e = Convert.ToDateTime(s.Start_Time_E);
+            DateTime e_t_e = Convert.ToDateTime(s.End_Time_E);
             TimeSpan interval = e_t.Subtract(s_t);
             TimeSpan interval_E = e_t_e.Subtract(s_t_e);
             int totalMins = Convert.ToInt32(interval.TotalMinutes);
@@ -117,7 +111,7 @@ namespace DoctorOnlineBooking.Controllers
             ViewBag.NoOfSlots = no_of_slots;
             ViewBag.NoOfSlotsEvening = no_of_slots_evening;
             ViewBag.Mins = min;
-           
+            TempData["DoctorId"] = id;
             return View();
         }
         //[HttpPost]
@@ -154,21 +148,39 @@ namespace DoctorOnlineBooking.Controllers
         [HttpPost]
         public ActionResult PatientDetails(string slotDate,DateTime? evngSlot, DateTime? mrngSlot)
         {
-
+            
             ViewBag.Gender = GenderList();
             ViewBag.SlotDate = slotDate;
+            TempData["BookingDate"] = slotDate; 
+
             if (evngSlot == null)
+            {
                 ViewBag.Slot = mrngSlot;
+                TempData["BookingTime"] = mrngSlot;
+            }
             else
+            {
                 ViewBag.Slot = evngSlot;
+                TempData["BookingTime"] = evngSlot;
+            }
             return View();
         }
         [HttpPost]
         public ActionResult Sms(PatientData patientData)
         {
-            if (patientData != null)
+           if (patientData != null)
             {
                 repository.DetailsOfPatient(patientData);
+                Appointment appointment = new Appointment()
+                {
+                    DoctorId = Convert.ToInt32(TempData["DoctorId"]),
+                    BookingSlot = Convert.ToDateTime(TempData["BookingTime"]),
+                    BookingDate = Convert.ToDateTime(TempData["BookingDate"]),
+                    PatientId = patientData.Id
+
+                };
+                DbContext.Appointments.Add(appointment);
+                DbContext.SaveChanges();
                 return View("Send");
             }
             else
