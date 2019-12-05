@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "SelectDoctor";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
 
 <h2>SelectDoctor</h2>
@@ -40,7 +40,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.DoctorName)
+            @Html.ActionLink(item.DoctorName, "Details", "Home", new { id = item.Id }, null)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PhoneNumber)

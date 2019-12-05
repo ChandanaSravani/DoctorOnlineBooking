@@ -3,27 +3,33 @@
     ViewBag.Title = "SearchByLocation";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<body style="background-image: url('../../Images/home-services-slide1.png');
+       background-repeat: no-repeat;
+       background-size: cover">
+    <h1>Search Your Doctor</h1>
+    <br />
+    <div class="container col-md-12">
+        @using (Html.BeginForm())
+        {
+           @Html.AntiForgeryToken()
+            <div class="form-group">
+                <font size="4"> <label>Search City</label></font>
+                @Html.DropDownListFor(c => c.City, ViewBag.City as SelectList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(c => c.City)
+            </div>
+            <div class="form-group">
+                <font size="4"> <label>Search Specialisation</label></font>
+                @*@Html.TextBoxFor(c => c.City, new { @class = "form-control", autocomplete = "off" })*@
+                @Html.DropDownListFor(c => c.Specialisation, ViewBag.Specialisation as SelectList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(c => c.Specialisation)
+            </div>
+            <div class="form-group">
+               <input type="submit" value="Search" id="btnSubmit" class="btn btn-outline-primary" />
+            </div>
+        }
+    </div>
 
-<h2>Search Your Doctor</h2>
-<div class="container col-md-12">
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-        <div class="form-group">
-            <label>Search City</label>
-            @*@Html.TextBoxFor(c => c.City, new { @class = "form-control", autocomplete = "off" })*@
-            @Html.DropDownListFor(c => c.City, ViewBag.City as SelectList, new { @class = "form-control" })
-            @Html.ValidationMessageFor(c => c.City)
-        </div>
-        <div class="form-group">
-            <label>Search Specialisation</label>
-            @*@Html.TextBoxFor(c => c.City, new { @class = "form-control", autocomplete = "off" })*@
-            @Html.DropDownListFor(c => c.Specialisation, ViewBag.Specialisation as SelectList, new { @class = "form-control" })
-            @Html.ValidationMessageFor(c => c.Specialisation)
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Search" id="btnSubmit" class="btn btn-outline-primary" />
-        </div>
-    }
-</div>
+
+
+</body>
 

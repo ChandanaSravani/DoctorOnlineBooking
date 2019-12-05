@@ -22,7 +22,15 @@ select,
 textarea {
     max-width: 280px;
 }
-/*#('.date-picker-2').popover({
+
+.field-validation-error {
+    color: red;
+}
+.input-validation-error.form-control {
+    border: 2px solid red;
+}
+
+    /*#('.date-picker-2').popover({
 	html : true, 
 	content: function() {
 	  return $("#example-popover-2-content").html();

@@ -309,6 +309,14 @@
     <Compile Include="Migrations\201912021257523_AppointmentTable.Designer.cs">
       <DependentUpon>201912021257523_AppointmentTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912050956434_newAnnotationsOnPatientData.cs" />
+    <Compile Include="Migrations\201912050956434_newAnnotationsOnPatientData.Designer.cs">
+      <DependentUpon>201912050956434_newAnnotationsOnPatientData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912051002444_newAnnotationsOnLoginTable.cs" />
+    <Compile Include="Migrations\201912051002444_newAnnotationsOnLoginTable.Designer.cs">
+      <DependentUpon>201912051002444_newAnnotationsOnLoginTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Appointment.cs" />
     <Compile Include="Models\PatientData.cs" />
     <Compile Include="Repositories\AdminRepository.cs" />
@@ -383,6 +391,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\home-services-slide1.png" />
     <Content Include="Images\images.png" />
     <Content Include="Images\img1.png" />
     <Content Include="Images\img2.jpg" />
@@ -400,6 +409,7 @@
     <Content Include="Images\pic7.jpg" />
     <Content Include="Images\pic8.jpg" />
     <Content Include="Images\pic9.jpg" />
+    <Content Include="Images\understanding-drug-interaction.jpg" />
     <Content Include="Login.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -466,6 +476,8 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Home\CalendarView.cshtml" />
     <Content Include="Views\Home\TimeSlots.cshtml" />
+    <Content Include="Views\Home\Details.cshtml" />
+    <Content Include="Views\Home\BookingDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -505,6 +517,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912021257523_AppointmentTable.resx">
       <DependentUpon>201912021257523_AppointmentTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912050956434_newAnnotationsOnPatientData.resx">
+      <DependentUpon>201912050956434_newAnnotationsOnPatientData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912051002444_newAnnotationsOnLoginTable.resx">
+      <DependentUpon>201912051002444_newAnnotationsOnLoginTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,30 +1,84 @@
 ﻿@model DoctorOnlineBooking.Models.Login
+
 @{
+
     ViewBag.Title = "Login";
+
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
-<center>
-    <h2>Login</h2>
-    <div id="img_box">
-        <img style="height: 100%;" src="~/Images/LoginImage.png" />
-    </div>
-    <div class="container col-md-12">
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-            <div class="form-group">
-                <label>UserMail/SapId</label>
-                @Html.TextBoxFor(c => c.UserName, new { @class = "form-control", autocomplete = "off" })
-                @Html.ValidationMessageFor(c => c.UserName)
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(c => c.Password)
-                @Html.TextBoxFor(c => c.Password, new { @class = "form-control" })
-                @Html.ValidationMessageFor(c => c.Password)
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Login" id="btnSubmit" class="btn btn-outline-primary" />
-            </div>
-        }
-    </div>
-</center>
+
+
+
+
+
+<body style="background-image: url('../../Images/understanding-drug-interaction.jpg');
+
+    background-repeat: no-repeat;
+
+    background-size: cover">
+
+
+
+    <center>
+
+        <h1> <b>Login</b></h1>
+
+        <div id="img_box">
+
+            <img style="height: 100%;" src="~/Images/LoginImage.png" />
+
+        </div>
+
+        <div class="container col-md-12">
+
+            @using (Html.BeginForm())
+
+            {
+
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+
+                    <font size="5">
+
+                        <label>
+
+                            UserMail/SapId
+
+                        </label>
+
+                    </font>
+
+                    @Html.TextBoxFor(c => c.UserName, new { @class = "form-control", autocomplete = "off" })
+
+                    @Html.ValidationMessageFor(c => c.UserName)
+
+                </div>
+
+                <div class="form-group">
+
+                    <label><font size="5"><b>Password</b></font></label>
+
+                    @Html.TextBoxFor(c => c.Password, new { @class = "form-control" })
+
+                    @Html.ValidationMessageFor(c => c.Password)
+
+                </div>
+
+                <div class="form-group">
+
+                    <input type="submit" value="Login" id="btnSubmit" class="btn btn-outline-primary" />
+
+                </div>
+
+            }
+
+        </div>
+
+    </center>
+
+</body>
+
+
+

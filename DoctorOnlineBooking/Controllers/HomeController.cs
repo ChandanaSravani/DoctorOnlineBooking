@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Nexmo.Api;
 using System.Net.Mail;
 using System.Net;
+using System.Data.Entity;
 
 namespace DoctorOnlineBooking.Controllers
 {
@@ -50,9 +51,9 @@ namespace DoctorOnlineBooking.Controllers
         public ActionResult Login(Login login)
         {
             var emp = DbContext.Employees.SingleOrDefault(a => a.Email == login.UserName || a.SapId.ToString() == login.UserName);
-            if(emp==null)
+            if (emp == null)
             {
-                return Content("Login Credentials Invalid");
+                return View();
             }
             else if (emp.Password == login.Password)
             {
@@ -76,8 +77,8 @@ namespace DoctorOnlineBooking.Controllers
         [HttpPost]
         public ActionResult SearchDoctorByLocationAndSpecialisation(Doctor doctor)
         {
-            List<Doctor> doctorsList = repository.ByLocation(doctor.City,doctor.Specialisation);
-            if (doctorsList.Count!=0)
+            List<Doctor> doctorsList = repository.ByLocation(doctor.City, doctor.Specialisation);
+            if (doctorsList.Count != 0)
             {
                 return View("SelectDoctor", doctorsList);
             }
@@ -90,6 +91,15 @@ namespace DoctorOnlineBooking.Controllers
         public ActionResult SelectDoctor()
         {
             return View("CalendarView");
+        }
+        public ActionResult Details(int id)
+        {
+            var doctor = DbContext.Doctors.Where(c => c.Id == id).FirstOrDefault();
+            if(doctor==null)
+            {
+                return HttpNotFound();
+            }
+            return View(doctor);
         }
         [HttpGet]
         public ActionResult CalendarView(int id)
@@ -114,44 +124,38 @@ namespace DoctorOnlineBooking.Controllers
             TempData["DoctorId"] = id;
             return View();
         }
-        //[HttpPost]
-        //public ActionResult CalendarView(string YourTextBox)
-        //{
-        //    return View("TimeSlots",YourTextBox);
-        //}
-        //[HttpPost]
-        //public ActionResult TimeSlots()
-        //{
-        //    string start_T = "08:30AM";
-        //    string end_T = "01:30PM";
-            
-
-        //    int min = 30;
-
-        //    DateTime s_t = Convert.ToDateTime(start_T);
-        //    DateTime e_t = Convert.ToDateTime(end_T);
-            
-
-        //    TimeSpan interval = e_t.Subtract(s_t);
-          
-
-        //    int totalMins = Convert.ToInt32(interval.TotalMinutes);
-           
-        //    int no_of_slots = totalMins / min;
-           
-        //    ViewBag.StartTime = s_t;
-        //    ViewBag.NoOfSlots = no_of_slots;
-            
-        //    ViewBag.Mins = min;
-        //    return View();
-        //}
+     
         [HttpPost]
-        public ActionResult PatientDetails(string slotDate,DateTime? evngSlot, DateTime? mrngSlot)
+        public ActionResult PatientDetails(string slotDate, DateTime? evngSlot, DateTime? mrngSlot)
         {
-            
+            var DoctorId = Convert.ToInt32(TempData["DoctorId"]);
+            TempData["DoctorId"] = DoctorId;
+            var appt = DbContext.Appointments.Where(c => c.DoctorId == DoctorId).ToList();
+            if (appt.Count != 0)
+            {
+                foreach (var item in appt)
+                {
+                    var BSlot = item.BookingSlot.ToShortTimeString();
+                    if (evngSlot == null)
+                    {
+                        if (BSlot == mrngSlot.Value.ToShortTimeString() && item.BookingDate.ToShortDateString() == slotDate)
+                        {
+                            return Content("Sorry No Bookings Available to this slot");
+
+                        }
+                    }
+                    else if (mrngSlot == null)
+                    {
+                        if (BSlot == evngSlot.Value.ToShortTimeString() && item.BookingDate.ToShortDateString() == slotDate)
+                        {
+                            return Content("Sorry No Bookings Available to this slot");
+                        }
+                    }
+                }
+            }
             ViewBag.Gender = GenderList();
             ViewBag.SlotDate = slotDate;
-            TempData["BookingDate"] = slotDate; 
+            TempData["BookingDate"] = slotDate;
 
             if (evngSlot == null)
             {
@@ -168,8 +172,10 @@ namespace DoctorOnlineBooking.Controllers
         [HttpPost]
         public ActionResult Sms(PatientData patientData)
         {
-           if (patientData != null)
+
+            if (patientData != null)
             {
+                
                 repository.DetailsOfPatient(patientData);
                 Appointment appointment = new Appointment()
                 {
@@ -181,10 +187,17 @@ namespace DoctorOnlineBooking.Controllers
                 };
                 DbContext.Appointments.Add(appointment);
                 DbContext.SaveChanges();
-                return View("Send");
+                TempData["AptId"] = appointment.Id;
+                return View("BookingDetails");
             }
             else
                 return Content("Data Not Stored");
+        }
+        public ActionResult BookingDetails()
+        {
+            int aptId =Convert.ToInt32( TempData["AptId"]);
+            var apt = DbContext.Appointments.Where(c => c.Id == aptId).Include(c => c.Doctor).Include(c => c.Patient).FirstOrDefault();
+            return View(apt);
         }
         [HttpGet]
         public ActionResult Send()
@@ -207,7 +220,7 @@ namespace DoctorOnlineBooking.Controllers
         [NonAction]
         public IEnumerable<SelectListItem> CityList()
         {
-            var city = DbContext.Doctors.AsEnumerable().GroupBy(n=>n.City).
+            var city = DbContext.Doctors.AsEnumerable().GroupBy(n => n.City).
                Select(m => new SelectListItem() { Text = m.Key }).ToList();
             city.Insert(0, new SelectListItem { Text = "----select-----", Value = "0", Disabled = true, Selected = true });
             return city;
@@ -233,6 +246,6 @@ namespace DoctorOnlineBooking.Controllers
         {
             return View();
         }
-        
+
     }
 }

@@ -1,0 +1,12 @@
+﻿@model DoctorOnlineBooking.Models.Appointment
+@{
+    ViewBag.Title = "BookingDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>BookingDetails</h2>
+@Model.Doctor.DoctorName
+@Model.Patient.PatientName
+@Model.BookingDate
+@Model.BookingSlot.ToShortTimeString()
+

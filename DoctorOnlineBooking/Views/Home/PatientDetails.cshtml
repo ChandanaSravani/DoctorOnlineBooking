@@ -3,7 +3,7 @@
     /**/
 
     ViewBag.Title = "PatientDetails";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
 <center>
     <h2>Fill the Patient Details</h2>
@@ -67,10 +67,18 @@
         </div>
     }
 </div>
-@section scripts{
+@*@section scripts{
     <script>
         $("#btnSubmit").click(function () {
-            confirm("Are you sure to book the appointment?");
+            confirm("Are you sure to book the appointment?", function (result) {
+                if (result) {
+                    $.ajax({
+                        url: "/home/sms",
+                        method: "POST"
+                        
+                    });
+                }
+            });
         });
     </script>
-}
+}*@
