@@ -283,6 +283,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\api\AdminsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -391,6 +392,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\64e002071b9df4830eb6b8395710d279.jpg" />
+    <Content Include="Images\95371973-medical-team-cartoon-icon-vector-illustration-graphic-design-health-and-healthcare.jpg" />
+    <Content Include="Images\Grid-Hexagonal-White-HD-Wallpaper_thumb.jpg" />
     <Content Include="Images\home-services-slide1.png" />
     <Content Include="Images\images.png" />
     <Content Include="Images\img1.png" />
@@ -399,6 +403,7 @@
     <Content Include="Images\img4.jpg" />
     <Content Include="Images\LoginImage.png" />
     <Content Include="Images\logologin.png" />
+    <Content Include="Images\pexels-photo-1022923.jpeg" />
     <Content Include="Images\pic1.jpg" />
     <Content Include="Images\pic10.jpg" />
     <Content Include="Images\pic2.jpg" />
@@ -410,6 +415,7 @@
     <Content Include="Images\pic8.jpg" />
     <Content Include="Images\pic9.jpg" />
     <Content Include="Images\understanding-drug-interaction.jpg" />
+    <Content Include="Images\white-background-with-beautiful-flowers_23-2147600700.jpg" />
     <Content Include="Login.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -478,6 +484,10 @@
     <Content Include="Views\Home\TimeSlots.cshtml" />
     <Content Include="Views\Home\Details.cshtml" />
     <Content Include="Views\Home\BookingDetails.cshtml" />
+    <Content Include="Views\Admin\Appointments.cshtml" />
+    <Content Include="Views\Admin\Delete.cshtml" />
+    <Content Include="Views\Home\NoResult.cshtml" />
+    <Content Include="Views\Home\NoBooking.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

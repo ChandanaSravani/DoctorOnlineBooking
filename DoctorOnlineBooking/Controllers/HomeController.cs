@@ -28,20 +28,7 @@ namespace DoctorOnlineBooking.Controllers
         {
             return View();
         }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
+        
         [HttpGet]
         public ActionResult Login()
         {
@@ -50,7 +37,7 @@ namespace DoctorOnlineBooking.Controllers
         [HttpPost]
         public ActionResult Login(Login login)
         {
-            var emp = DbContext.Employees.SingleOrDefault(a => a.Email == login.UserName || a.SapId.ToString() == login.UserName);
+            var emp = DbContext.Employees.SingleOrDefault(a => a.Email.ToLower() == login.UserName.ToLower() || a.SapId.ToString() == login.UserName);
             if (emp == null)
             {
                 return View();
@@ -78,29 +65,29 @@ namespace DoctorOnlineBooking.Controllers
         public ActionResult SearchDoctorByLocationAndSpecialisation(Doctor doctor)
         {
             List<Doctor> doctorsList = repository.ByLocation(doctor.City, doctor.Specialisation);
+            
             if (doctorsList.Count != 0)
             {
                 return View("SelectDoctor", doctorsList);
             }
             else
             {
-                return Content("No Results");
+                return View("NoResult");
             }
+
+
         }
+        public ActionResult NoResult()
+        {
+            return View();
+        }
+
         [HttpGet]
         public ActionResult SelectDoctor()
         {
             return View("CalendarView");
         }
-        public ActionResult Details(int id)
-        {
-            var doctor = DbContext.Doctors.Where(c => c.Id == id).FirstOrDefault();
-            if(doctor==null)
-            {
-                return HttpNotFound();
-            }
-            return View(doctor);
-        }
+        
         [HttpGet]
         public ActionResult CalendarView(int id)
         {
@@ -124,7 +111,7 @@ namespace DoctorOnlineBooking.Controllers
             TempData["DoctorId"] = id;
             return View();
         }
-     
+
         [HttpPost]
         public ActionResult PatientDetails(string slotDate, DateTime? evngSlot, DateTime? mrngSlot)
         {
@@ -140,7 +127,7 @@ namespace DoctorOnlineBooking.Controllers
                     {
                         if (BSlot == mrngSlot.Value.ToShortTimeString() && item.BookingDate.ToShortDateString() == slotDate)
                         {
-                            return Content("Sorry No Bookings Available to this slot");
+                            return View("NoBooking");
 
                         }
                     }
@@ -148,7 +135,7 @@ namespace DoctorOnlineBooking.Controllers
                     {
                         if (BSlot == evngSlot.Value.ToShortTimeString() && item.BookingDate.ToShortDateString() == slotDate)
                         {
-                            return Content("Sorry No Bookings Available to this slot");
+                            return View("NoBooking");
                         }
                     }
                 }
@@ -169,35 +156,55 @@ namespace DoctorOnlineBooking.Controllers
             }
             return View();
         }
+        public ActionResult NoBooking()
+        {
+            return View();
+        }
         [HttpPost]
-        public ActionResult Sms(PatientData patientData)
+        public ActionResult PatientForm(PatientData patientData)
         {
 
             if (patientData != null)
             {
-                
-                repository.DetailsOfPatient(patientData);
-                Appointment appointment = new Appointment()
-                {
-                    DoctorId = Convert.ToInt32(TempData["DoctorId"]),
-                    BookingSlot = Convert.ToDateTime(TempData["BookingTime"]),
-                    BookingDate = Convert.ToDateTime(TempData["BookingDate"]),
-                    PatientId = patientData.Id
 
-                };
-                DbContext.Appointments.Add(appointment);
-                DbContext.SaveChanges();
-                TempData["AptId"] = appointment.Id;
-                return View("BookingDetails");
+                repository.DetailsOfPatient(patientData);
+                try
+                {
+                    Appointment appointment = new Appointment()
+                    {
+                        DoctorId = Convert.ToInt32(TempData["DoctorId"]),
+                        BookingSlot = Convert.ToDateTime(TempData["BookingTime"]),
+                        BookingDate = Convert.ToDateTime(TempData["BookingDate"]),
+                        PatientId = patientData.Id
+
+                    };
+                    DbContext.Appointments.Add(appointment);
+                    DbContext.SaveChanges();
+                    TempData["AptId"] = appointment.Id;
+                    return RedirectToAction("BookingDetails");
+                }
+                catch (FormatException ex)
+                {
+                    return Content(ex.Message);
+                }
             }
             else
                 return Content("Data Not Stored");
         }
         public ActionResult BookingDetails()
         {
-            int aptId =Convert.ToInt32( TempData["AptId"]);
+            int aptId = Convert.ToInt32(TempData["AptId"]);
             var apt = DbContext.Appointments.Where(c => c.Id == aptId).Include(c => c.Doctor).Include(c => c.Patient).FirstOrDefault();
             return View(apt);
+        }
+        public ActionResult Details(int id)
+        {
+            var doctor = DbContext.Doctors.Where(c => c.Id == id).FirstOrDefault();
+            if (doctor == null)
+            {
+                return HttpNotFound();
+            }
+            return View(doctor);
         }
         [HttpGet]
         public ActionResult Send()

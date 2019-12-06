@@ -7,17 +7,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
-
-
-
-
-
 <body style="background-image: url('../../Images/understanding-drug-interaction.jpg');
 
     background-repeat: no-repeat;
 
     background-size: cover">
-
 
 
     <center>
@@ -60,7 +54,7 @@
 
                     <label><font size="5"><b>Password</b></font></label>
 
-                    @Html.TextBoxFor(c => c.Password, new { @class = "form-control" })
+                    @Html.PasswordFor(c => c.Password, new { @class = "form-control", autocomplete = "off" })
 
                     @Html.ValidationMessageFor(c => c.Password)
 

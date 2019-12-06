@@ -4,75 +4,98 @@
     ViewBag.Title = "SelectDoctor";
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
+<body style="
+        background-image: url('../../Images/95371973-medical-team-cartoon-icon-vector-illustration-graphic-design-health-and-healthcare.jpg');
+        background-repeat: no-repeat;
+        background-size: cover">
+    <h2>SelectDoctor</h2>
 
-<h2>SelectDoctor</h2>
+    <b>
+        <table class="table">
+            <tr>
+                <th>
 
+                    @Html.DisplayNameFor(model => model.DoctorName)
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.DoctorName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsAvailable)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HospitalName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Address )
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.State)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Country)
-        </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.Specialisation)
-        </th>
-        <th></th>
-    </tr>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </th>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink(item.DoctorName, "Details", "Home", new { id = item.Id }, null)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PhoneNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsAvailable)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HospitalName)
-        </td>
-        <td>
-            @{
-                var address = item.Address + " " + item.City + " " + item.State + " " + item.Country;
-                @Html.DisplayFor(modelItem =>address)
-              }
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.State)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Country)
-        </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.Specialisation)
-        </td>
-        <td>
-            @Html.ActionLink("Book Appointment","CalendarView",new { id = item.Id })
-            @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
-        </td>
-    </tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.HospitalName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address)
+                </th>
+                <th>
+                    @Html.DisplayName("Book Your Appointment")
+                </th>
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @*<div class="popup" onclick="myFunction()">
+                                @Html.DisplayFor(modelItem => item.DoctorName)
+                                <span class="popuptext" id="myPopup">Popup text...</span>
+                            </div>*@
+                        <div class="popup" onclick="myFunction()">
+                            @item.DoctorName
+                            <span class="popuptext" id="myPopup">
+                                @item.DoctorName<br />
+                                <label>Morning time</label> @item.Start_Time_M - @item.End_Time_M<br />
+                                <label>Evening time</label> @item.Start_Time_E - @item.End_Time_E
+                            </span>
+                        </div>
+                        @*  @Html.DisplayFor(modelItem => item.DoctorName)*@
+                        @*@Html.ActionLink(item.DoctorName, "Details", "Home", new { id = item.Id }, null)*@
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HospitalName)
+                    </td>
+                    <td>
+                        @{
+                            var address = item.Address + " " + item.City + " " + item.State + " " + item.Country;
+                            @Html.DisplayFor(modelItem => address)
+                        }
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.State)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Country)
+                        </td>*@
+
+                    <td>
+                        @Html.ActionLink("Book Appointment", "CalendarView", new { id = item.Id })
+
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </b>
+</body>
+@section scripts
+{
+    @*<script>
+        function openForm() {
+            document.getElementById("x").style.display = "block";
+        }
+    </script>*@
+    <script>
+        // When the user clicks on div, open the popup
+        function myFunction() {
+            var popup = document.getElementById("myPopup");
+            popup.classList.toggle("show");
+        }
+    </script>
 }
-
-</table>

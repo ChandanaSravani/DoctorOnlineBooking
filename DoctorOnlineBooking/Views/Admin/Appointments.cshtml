@@ -1,0 +1,70 @@
+﻿@model IEnumerable<DoctorOnlineBooking.Models.Appointment>
+
+@{
+    ViewBag.Title = "Appointments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Appointments</h2>
+<table id="appointments" class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Doctor.DoctorName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Patient.PatientName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BookingDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BookingSlot)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Doctor.DoctorName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient.PatientName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookingDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookingSlot.TimeOfDay)
+            </td>
+            <td>
+                <button data-appointments-id="@item.Id" class="btn-link js-delete"> Delete</button>
+
+            </td>
+        </tr>
+    }
+
+</table>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#appointments .js-delete").on("click", function () {
+                var button = $(this);
+                if (confirm("Are you sure to delete this appointment?")) {
+                    $.ajax({
+                        url: "/api/admins/" + button.attr("data-appointments-id"),
+                        method: "DELETE",
+                        success: function () {
+                           
+                            button.parents("tr").remove();
+                            console.log("Appointment is deleted");
+
+                        }
+                    });
+                }
+            });
+        });
+            
+    </script>
+}
