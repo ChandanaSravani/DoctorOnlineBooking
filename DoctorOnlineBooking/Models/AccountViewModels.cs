@@ -7,7 +7,7 @@ namespace DoctorOnlineBooking.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "Your Email")]
         public string Email { get; set; }
     }
 
